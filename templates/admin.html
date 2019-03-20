@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="about-section">
+    <div class="container">
+      
+  <div class="section-content">
+        <h2> Projekt- und Userverwaltung </h2>
+        <br/>
+        <br/>
+        Neuen User hinzufügen:
+        <br/>
+        <br/>
+
+        <form action="/new_user" method="POST">
+            Projekt: <select name="projectname">
+                          {% for projects in datas %}
+                          <option>{{ projects.projectname }}</option>
+                          {% endfor %}
+                     <select>
+             <br/>
+            Username: <input type="text" name="username" placeholder="username">
+             <br/>
+            Password: <input type="text" name="password" placeholder="password">
+             <br/>
+            Rolle: <select name="role">
+                <option value='1'>admin</option>
+                <option value='2'>user</option>
+                <option value='3'>superuser</option>
+              <select>
+             <br/>
+             <input type="submit" class="button button1" value="Hinzufügen">
+        </form>
+
+        <br>
+        <br>
+
+        Neues Projekt hinzufügen:
+        <br>
+        <br>
+          <form action = "/upload" method = "POST" enctype = "multipart/form-data">
+              Projektname: <input type="text" name="name">
+              <p>CSV hochladen: </p>
+              <input type = "file" name = "the_file" />
+              <input type = "submit" class="button button1" value="Hinzufügen">
+          </form>
+
+        <br>
+        <br>
+        <a href="/" class="button button1" >Go Back</a>
+  </div>
+
+
+
+  <h2>Aktuelle Projekte</h2>
+
+        <table>
+          <tr>
+            <th>Projektname</th>
+            <th>Filename</th>
+        <br>
+          </tr>
+           {% for projects in datas %}
+          <tr>
+            <td>{{ projects.projectname }}</td>
+            <td>{{ projects.filename }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+  <br>
+  <h2>Alle Räume </h2>
+      
+      <table>
+          <tr>
+            <th>Username</th>
+            <th>Passwort</th>
+            <th>Rolle</th>
+            <th>Projekt</th>
+        <br>
+          </tr>
+           {% for users in users_data %}
+          <tr>
+            <td>{{ users.username }}</td>
+            <td>{{ users.password }}</td>
+            <td>{{ users.role }}</td>
+            <td>{{ users.projectname }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+    </div>
+  </main>
+{% endblock %}
+<!-- -->

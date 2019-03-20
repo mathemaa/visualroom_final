@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="about-section">
+    <div class="container"
+         style="height: 300px;width:600px;">
+
+      <h2> Visualisierung des Leistungsfortschritt </h2>
+      <p> Grundriss 1.OG </p>
+        <a href="/useredit" class="button button1" >Go Back</a>
+
+        <br>
+        <br>
+      <body>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="1050px" height="1050px">
+
+           
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067be1d42-body">
+            <path style="stroke:black; fill:none;" d="M174.519,2.27374e-13 L174.519,144.341 L4.95604e-13,144.341 L4.95604e-13,2.27374e-13 L174.519,2.27374e-13"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067be1d7f-body">
+            <path style="stroke:black; fill:none;" d="M5.08038e-13,144.341 L175.304,144.341 L175.304,211.638 L5.08038e-13,211.638 L5.08038e-13,144.341"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067be1d78-body">
+            <path style="stroke:black; fill:none;" d="M131.365,280.897 L131.365,215.38 L175.304,215.38 L175.304,280.897 L131.365,280.897"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067be1d75-body">
+            <path style="stroke:black; fill:none;" d="M240.398,167.729 L240.398,0 L178.261,0 L178.261,108.128 L174.519,108.128 L174.519,144.341 L175.304,144.341 L175.304,148.499 L175.304,192.777 L179.046,192.777 L179.046,213.509 L179.046,221.205 L179.046,244.2 L179.046,280.897 L209.785,280.897 L209.785,167.729 L240.398,167.729"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067bfe323-body">
+            <path style="stroke:black; fill:none;" d="M65.8786,512 L65.8786,367.659 L240.398,367.659 L240.398,512 L65.8786,512"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067bfe0dc-body">
+            <path style="stroke:black; fill:none;" d="M240.398,367.659 L65.094,367.659 L65.094,300.362 L240.398,300.362 L240.398,367.659"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067bfe0d9-body">
+            <path style="stroke:black; fill:none;" d="M109.033,231.103 L109.033,296.62 L65.094,296.62 L65.094,231.103 L109.033,231.103"/>
+        </g>
+        <g id="product-product-0b74b3fa-1a92-405e-9ac9-d59067bfe0da-body">
+            <path style="stroke:black; fill:none;" d="M4.81393e-13,512 L4.81393e-13,344.271 L30.6126,344.271 L30.6126,231.103 L61.3519,231.103 L61.3519,267.688 L61.3519,290.735 L61.3519,298.491 L61.3519,319.223 L65.094,319.223 L65.094,363.501 L65.094,367.659 L65.8786,367.659 L65.8786,403.872 L62.1365,403.872 L62.1365,512 L4.81393e-13,512"/>
+        </g>
+        <g id="product-product-40c2d70d-8d3b-49a9-9702-6756a4ee40fd-body">
+            <path style="stroke:black; fill:blue;" d="M209.785,167.729 L240.398,167.729 L240.398,280.897 L209.785,280.897 L209.785,167.729"/>
+        </g>
+        <g id="product-product-40c2d70d-8d3b-49a9-9702-6756a4ee4132-body">
+            <path style="stroke:black; fill:green;" d="M4.7784e-13,231.103 L30.6126,231.103 L30.6126,344.271 L4.7784e-13,344.271 L4.7784e-13,231.103"/>
+        </g>
+    
+     </svg>
+
+
+     
+            
+
+         <table>
+          <tr>
+            <th>ROOM</th>
+            <th>STATUS</th>
+            <th>GUID</th>
+        <br>
+          </tr>
+
+           {% for rooms in datas %}
+          <tr>
+                <td>{{ rooms.room }}</td>
+                <td>{{ rooms.status }}</td>
+                <td>{{ rooms.roomguid }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+      </body>
+    </div>
+  </main>
+{% endblock %}

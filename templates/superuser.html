@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="about-section">
+    <div class="container">
+
+        <h2> Hallo User  </h2>
+        <p> Status aller Räume </p>
+        <br>
+        <a href="/" class="button button1" >Go Back</a>
+        <br>
+
+        <head>
+        <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: #008CBA;
+            color: white;
+        }
+        </style>
+        </head>
+        <body>
+
+        <h2>Projekt A</h2>
+
+        <table>
+          <tr>
+          	<th>USERID</th>
+            <th>FLOOR</th>
+            <th>ROOM</th>
+            <th>STATUS</th>
+        <br>
+          </tr>
+
+           {% for rooms in datas %}
+          <tr>
+          	<td>{{ rooms.userid }}</td>
+            <td>{{ rooms.floor }}</td>
+            <td>{{ rooms.room }}</td>
+            <td>{{ rooms.status }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+        </body>
+       
+    </div>
+  </main>
+{% endblock %}

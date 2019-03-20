@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="hero-section">
+    <div class="container">
+
+      <div class="section-content">
+        <h2> Visualroom is coming soon !</h2>
+        <p> © 2018 Steve Breden All Rights Reserved</p>
+        <br>
+        <h2> Start your session </h2>
+
+        <form action="/login" method="POST">
+
+            Username: <input type="text" name="username" >
+             <br/>
+            Password: <input type="text" name="password" >
+             <br/>
+             <br/>
+             <input type="submit" class="button button1" value="Log In">
+        </form>
+        
+        
+      </div>
+
+
+      <div class="section-device">
+       
+          <br>
+        <a href="admin" class="btn-primary">Admin</a>
+        <br>
+        <br>
+        <a href="user" class="btn-primary">User</a> 
+        <br>
+        <br>
+        <a href="superuser" class="btn-primary">Superuser</a> 
+        <br>
+        <br>
+        <br>
+        <a href="grafik" class="btn-primary">Grafik</a> 
+        <br/>
+
+      </div> 
+      
+      <div class="clearfix"></div>
+     
+
+  </main>
+{% endblock %}

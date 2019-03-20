@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="about-section">
+    <div class="container">
+
+        <h2> Hallo Gewerk  </h2>
+        <p> Status der Leistung in den Räumen verändern </p>
+        <br>
+        <a href="/" class="button button1" >Go Back</a>
+        <br>
+         <a href="/grafik" class="button button1" >Grundriss</a>
+        <br>
+
+
+        <head>
+        <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: #008CBA;
+            color: white;
+        }
+        </style>
+        </head>
+        <body>
+
+        <h2>Projekt A</h2>
+
+
+        <table>
+          <tr>
+            <th>FLOOR</th>
+            <th>ROOM</th>
+            <th>STATUS</th>
+            <th>UPDATE</th>
+            <th>TASKS</th>
+        <br>
+          </tr>
+
+           {% for rooms in datas %}
+          <tr>
+                <td>{{ rooms.floor }}</td>
+
+                <td>{{ rooms.room }}</td>
+           
+                
+                <td>
+                    {{rooms.status}}
+                    {% if rooms.status == '1' %}  
+                           Nicht angefangen 
+                    {% endif %}
+                    {% if rooms.status == '2' %}  
+                            Angefangen
+                    {% endif %}
+                    {% if rooms.status == '3' %}  
+                            In Bearbeitung
+                    {% endif %}
+                    {% if rooms.status == '4' %}  
+                            Fertigestellt
+                    {% endif %}
+
+                </td>
+                
+                <td>
+
+                        <form action="/update/{{rooms.room_id}}" method="POST">
+                
+                                <select name="status">
+                                {{rooms.status}}
+                                {% if rooms.status == '1' %}  
+                                    <option value='1' selected>Nicht angefangen</option>
+                                {% else %}
+                                    <option value='1'>Nicht angefangen</option>
+                                {% endif %}
+
+                                {% if rooms.status == '2' %}
+                                    <option value='2' selected>Angefangen</option>
+                                {% else %}
+                                    <option value='2'>Angefangen</option>
+                                {% endif %}
+
+                                {% if rooms.status == '3' %}
+                                    <option value='3' selected>In Bearbeitung</option>
+                                {% else %}
+                                    <option value='3'>In Bearbeitung</option>
+                                {% endif %}
+
+                                {% if rooms.status == '4' %}  
+                                    <option value='4' selected>Fertiggestellt</option>
+                                {% else %}
+                                    <option value='4'>Fertiggestellt</option>
+                                {% endif %}
+                                 <select>
+                                <input type="submit" name="btn" value="Update">
+
+                        </form>
+
+                </td>
+
+                <td>
+                    <form action="/check" method="get">
+                        {% for tasks in datas1 %}
+                            <input type="checkbox" name="task" value="done"> {{tasks.task}} <br>
+                        {% endfor %}
+                        <input type="submit" value="Submit">
+
+                    </form>
+                </td>
+               
+                
+          
+
+          </tr>
+          {% endfor %}
+        </table>
+</form>
+        <br/>
+        
+        
+
+        </body>
+       
+    
+    </div>
+  </main>
+{% endblock %}

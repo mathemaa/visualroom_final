@@ -73,6 +73,7 @@
       
       <table>
           <tr>
+            <th>UserId</th>
             <th>Username</th>
             <th>Passwort</th>
             <th>Rolle</th>
@@ -81,6 +82,7 @@
           </tr>
            {% for users in users_data %}
           <tr>
+            <td>{{ users.user_id }}</td>
             <td>{{ users.username }}</td>
             <td>{{ users.password }}</td>
             <td>{{ users.role }}</td>

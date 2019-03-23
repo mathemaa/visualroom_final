@@ -38,10 +38,13 @@ def login():
 
     cur.execute( "SELECT user_id FROM users WHERE username = %s AND password = %s ",
       (x,y)
-    )
-    userid = (cur.fetchone()[0])
+      )
 
-    cur.execute("SELECT role FROM users Where user_id = {0} ".format(userid))
+    userid = str(cur.fetchone()[0])
+
+    cur.execute("SELECT role FROM users WHERE user_id = %s ",
+      (userid)
+      )
 
     role = cur.fetchone()[0]
 
@@ -55,6 +58,8 @@ def login():
     
     if role is '3':
       return redirect('/superuser')
+
+   
 
 @app.route('/admin')
 def admin_session():

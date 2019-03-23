@@ -20,7 +20,7 @@ class users(db.Model):
   projectname = db.Column(db.String(100))
 
 	
-  def __init__(self, username, password, role, projectname):
+  def __init__(self,  username, password, role, projectname):
      #Attribute der Klasse -> self.xxxx
     self.username = username
     self.password = password 

@@ -44,26 +44,21 @@
             <path style="stroke:black; fill:none;" d="M4.81393e-13,512 L4.81393e-13,344.271 L30.6126,344.271 L30.6126,231.103 L61.3519,231.103 L61.3519,267.688 L61.3519,290.735 L61.3519,298.491 L61.3519,319.223 L65.094,319.223 L65.094,363.501 L65.094,367.659 L65.8786,367.659 L65.8786,403.872 L62.1365,403.872 L62.1365,512 L4.81393e-13,512"/>
         </g>
         <g id="product-product-40c2d70d-8d3b-49a9-9702-6756a4ee40fd-body">
-            <path style="stroke:black; fill:blue;" d="M209.785,167.729 L240.398,167.729 L240.398,280.897 L209.785,280.897 L209.785,167.729"/>
+            <path style="stroke:black; fill:none;" d="M209.785,167.729 L240.398,167.729 L240.398,280.897 L209.785,280.897 L209.785,167.729"/>
         </g>
         <g id="product-product-40c2d70d-8d3b-49a9-9702-6756a4ee4132-body">
-            <path style="stroke:black; fill:green;" d="M4.7784e-13,231.103 L30.6126,231.103 L30.6126,344.271 L4.7784e-13,344.271 L4.7784e-13,231.103"/>
+            <path style="stroke:black; fill:none;" d="M4.7784e-13,231.103 L30.6126,231.103 L30.6126,344.271 L4.7784e-13,344.271 L4.7784e-13,231.103"/>
         </g>
     
      </svg>
 
 
-     
-            
+      <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script>
+            window.jQuery || document.write('<script src="js/jquery-3.1.1.min.js"><\/script>')
+        </script>
 
-         <table>
-          <tr>
-            <th>ROOM</th>
-            <th>STATUS</th>
-            <th>GUID</th>
-        <br>
-          </tr>
-
+         <table id="data">
            {% for rooms in datas %}
           <tr>
                 <td>{{ rooms.room }}</td>
@@ -72,6 +67,42 @@
           </tr>
           {% endfor %}
         </table>
+
+     <script>
+
+        var rooms = []
+
+        var rows = $("#data").children()[0].children;
+
+        var size = rows.length
+
+        for (var i = 0; i < size; i++){
+           var cells = rows[i].children
+           var room = {}
+           room.name = cells[0].innerText
+           room.status = cells[1].innerText
+           room.guid = cells[2].innerText
+           rooms[i] = room
+          if (room.status === '1') {
+            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:blue;'); 
+          } else if (room.status === '2') {
+            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:yellow;'); 
+          } else if (room.status === '3') {
+            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:green;');            
+          } else if (room.status === '4') {
+            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:red;'); 
+          }
+        }
+
+
+        for (var i = 0; i < size; i++){
+              
+
+        }
+
+
+    </script>
+
 
       </body>
     </div>

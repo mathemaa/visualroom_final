@@ -7,9 +7,7 @@
 
       <h2> Visualisierung des Leistungsfortschritt </h2>
       <p> Grundriss 1.OG </p>
-        <a href="/useredit" class="button button1" >Go Back</a>
-
-        <br>
+       
         <br>
       <body>
 
@@ -89,8 +87,6 @@
             $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:yellow;'); 
           } else if (room.status === '3') {
             $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:green;');            
-          } else if (room.status === '4') {
-            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:red;'); 
           }
         }
 
@@ -105,6 +101,10 @@
 
 
       </body>
+
+       <a href="/useredit" class="button button1" >Go Back</a>
+
+        <br>
     </div>
   </main>
 {% endblock %}

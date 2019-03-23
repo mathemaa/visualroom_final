@@ -8,6 +8,18 @@
         <h2> Projekt- und Userverwaltung </h2>
         <br/>
         <br/>
+        Neues Projekt hinzufügen:
+        <br>
+        <br>
+          <form action = "/upload" method = "POST" enctype = "multipart/form-data">
+              Projektname: <input type="text" name="name">
+              <p>CSV hochladen: 
+              <input type = "file" name = "the_file" /> </p>
+              
+              <input type = "submit" class="button button1" value="Hinzufügen">
+          </form>
+        <br>
+        <br>
         Neuen User hinzufügen:
         <br/>
         <br/>
@@ -24,31 +36,69 @@
             Password: <input type="text" name="password" placeholder="password">
              <br/>
             Rolle: <select name="role">
-                <option value='1'>admin</option>
                 <option value='2'>user</option>
                 <option value='3'>superuser</option>
               <select>
-             <br/>
+              <br>
+              <br/>
              <input type="submit" class="button button1" value="Hinzufügen">
         </form>
 
         <br>
         <br>
-
-        Neues Projekt hinzufügen:
-        <br>
-        <br>
-          <form action = "/upload" method = "POST" enctype = "multipart/form-data">
-              Projektname: <input type="text" name="name">
-              <p>CSV hochladen: </p>
-              <input type = "file" name = "the_file" />
-              <input type = "submit" class="button button1" value="Hinzufügen">
-          </form>
-
-        <br>
-        <br>
-        <a href="/" class="button button1" >Go Back</a>
+        
   </div>
+
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+<head>
+        <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even){background-color: #f2f2f2}
+        th {
+            background-color: #008CBA;
+            color: white;
+        }
+        </style>
+        </head>
+        <body>
 
 
 
@@ -69,7 +119,7 @@
         </table>
 
   <br>
-  <h2>Alle Räume </h2>
+  <h2>Alle Benutzer </h2>
       
       <table>
           <tr>
@@ -91,6 +141,38 @@
           {% endfor %}
         </table>
 
+    <br>
+
+
+    <h2>Terminplan</h2>
+      
+      <table>
+          <tr>
+            <th>UserId</th>
+            <th>VorgangsId</th>
+            <th>Vorgang</th>
+            <th>Vorgänger</th>
+            <th>Nachfolger</th>
+        <br>
+          </tr>
+           {% for tasks in tasks_data %}
+          <tr>
+            <td>{{ tasks.userid }}</td>
+            <td>{{ tasks.task_id }}</td>
+            <td>{{ tasks.task }}</td>
+            <td>{{ tasks.predecessor }}</td>
+            <td>{{ tasks.successor }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+      </body>
+
+      <br>
+        <br>
+        <a href="/" class="button button1" >Go Back</a>
+        <br>
+        <br>
     </div>
   </main>
 {% endblock %}

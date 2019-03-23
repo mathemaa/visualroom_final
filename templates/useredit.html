@@ -6,13 +6,8 @@
 
         <h2> Hallo Gewerk  </h2>
         <p> Status der Leistung in den Räumen verändern </p>
-        <br>
-        <a href="/" class="button button1" >Go Back</a>
-        <br>
-         <a href="/grafik" class="button button1" >Grundriss</a>
-        <br>
-
-
+         <a href="/grafik" class="button button1" >Grundriss anzeigen</a>
+        
         <head>
         <style>
         table {
@@ -37,11 +32,10 @@
 
         <table>
           <tr>
-            <th>FLOOR</th>
-            <th>ROOM</th>
+            <th>STOCKWERK</th>
+            <th>RAUM</th>
             <th>STATUS</th>
-            <th>UPDATE</th>
-            <th>TASKS</th>
+            <th>LEISTUNGEN</th>
         <br>
           </tr>
 
@@ -51,23 +45,6 @@
 
                 <td>{{ rooms.room }}</td>
            
-                
-                <td>
-                    {{rooms.status}}
-                    {% if rooms.status == '1' %}  
-                           Nicht angefangen 
-                    {% endif %}
-                    {% if rooms.status == '2' %}  
-                            Angefangen
-                    {% endif %}
-                    {% if rooms.status == '3' %}  
-                            In Bearbeitung
-                    {% endif %}
-                    {% if rooms.status == '4' %}  
-                            Fertigestellt
-                    {% endif %}
-
-                </td>
                 
                 <td>
 
@@ -82,21 +59,15 @@
                                 {% endif %}
 
                                 {% if rooms.status == '2' %}
-                                    <option value='2' selected>Angefangen</option>
+                                    <option value='2' selected>In Bearbeitung</option>
                                 {% else %}
-                                    <option value='2'>Angefangen</option>
+                                    <option value='2'>In Bearbeitung</option>
                                 {% endif %}
 
-                                {% if rooms.status == '3' %}
-                                    <option value='3' selected>In Bearbeitung</option>
+                                {% if rooms.status == '3' %}  
+                                    <option value='3' selected>Fertiggestellt</option>
                                 {% else %}
-                                    <option value='3'>In Bearbeitung</option>
-                                {% endif %}
-
-                                {% if rooms.status == '4' %}  
-                                    <option value='4' selected>Fertiggestellt</option>
-                                {% else %}
-                                    <option value='4'>Fertiggestellt</option>
+                                    <option value='3'>Fertiggestellt</option>
                                 {% endif %}
                                  <select>
                                 <input type="submit" name="btn" value="Update">
@@ -110,7 +81,7 @@
                         {% for tasks in datas1 %}
                             <input type="checkbox" name="task" value="done"> {{tasks.task}} <br>
                         {% endfor %}
-                        <input type="submit" value="Submit">
+                        <!--<input type="submit" value="Submit">-->
 
                     </form>
                 </td>
@@ -124,7 +95,8 @@
 </form>
         <br/>
         
-        
+        <a href="/" class="button button1" >Go Back</a>
+        <br>
 
         </body>
        

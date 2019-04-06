@@ -50,6 +50,8 @@
     
      </svg>
 
+     <a href="/useredit" class="button button1" >Go Back</a>
+
 
       <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script>
@@ -68,21 +70,21 @@
 
      <script>
 
-        var rooms = []
-
+        // children method traverses only one level down the DOM tree
         var rows = $("#data").children()[0].children;
-
         var size = rows.length
 
         for (var i = 0; i < size; i++){
+        // Runs 10 times with values from 0 to 9
            var cells = rows[i].children
            var room = {}
-           room.name = cells[0].innerText
+           room.room = cells[0].innerText
            room.status = cells[1].innerText
            room.guid = cells[2].innerText
-           rooms[i] = room
-          if (room.status === '1') {
-            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:blue;'); 
+
+          if (room.status === '1' ) {
+            // The children() method is used to get the child elements and change the color of the element. 
+            $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:none;'); 
           } else if (room.status === '2') {
             $('#product-product-' + room.guid + '-body').children()[0].setAttribute('style', 'stroke:black; fill:yellow;'); 
           } else if (room.status === '3') {
@@ -90,19 +92,10 @@
           }
         }
 
-
-        for (var i = 0; i < size; i++){
-              
-
-        }
-
-
     </script>
 
 
       </body>
-
-       <a href="/useredit" class="button button1" >Go Back</a>
 
         <br>
     </div>

@@ -1,6 +1,6 @@
 # Module werden importiert 
 from flask import Flask, request, redirect, render_template, session
-from database import db, users, projects, rooms, tasks
+from database import db, users, projects, rooms, checklist, tasks
 from werkzeug.utils import secure_filename
 import psycopg2, csv
 import os
@@ -35,7 +35,6 @@ def login():
     x = request.form['username']
     y = request.form['password']
     
-
     cur.execute( "SELECT user_id FROM users WHERE username = %s AND password = %s ",
       (x,y)
       )
@@ -50,9 +49,6 @@ def login():
 
     session['userid'] = userid
 
-    if role is '1':
-      return redirect('/admin')
-
     if role is '2': 
       return redirect('/useredit')
     
@@ -65,7 +61,8 @@ def login():
 def admin_session():
   all_projects = projects.query.all()
   all_users = users.query.all()
-  return render_template('admin.html',  datas=all_projects, users_data=all_users)
+  all_tasks = tasks.query.all()
+  return render_template('admin.html',  datas=all_projects, users_data=all_users, tasks_data=all_tasks)
 
 @app.route('/superuser')
 def superuser_session():
@@ -78,12 +75,14 @@ def user_session():
   if 'userid' not in session:
     return redirect('/')
   
-  #user stored in the session or abort
   userid = str(session['userid'])
 
   datas = rooms.query.filter(rooms.userid == userid).all()
-  datas1 = tasks.query.filter(tasks.userid == userid).all()
-  return render_template('useredit.html', datas=datas, datas1=datas1 )
+  datas1 = checklist.query.filter(checklist.userid == userid).all()
+  
+  #datas1 = tasks.query.filter(tasks.userid == userid).all()
+
+  return render_template('useredit.html', datas=datas, datas1=datas1)
   
 
 @app.route("/update/<int:room_id>", methods=['POST'])
@@ -92,6 +91,30 @@ def update(room_id):
   room.status =request.form['status']
   db.session.commit()
   return redirect('/useredit')
+
+
+@app.route("/checked/<int:checklist_id>", methods=['POST'])
+def checked(checklist_id):
+  current = checklist.query.filter_by(checklist_id = checklist.checklist_id).first()       
+  current.status =request.form['status']
+  cur_room = current.room
+  cur_suc = current.successor
+  db.session.commit()
+
+  conn = psycopg2.connect(
+                database="vr",
+                user="postgres",
+                host="localhost",
+                port="5432"
+                )
+  cur = conn.cursor()
+  cur.execute(
+  			"UPDATE checklist SET status = '2' WHERE room = %s AND task_id = %s",
+      		(cur_room,cur_suc) )
+  conn.commit()
+
+  return redirect('/useredit')
+
 
 @app.route("/grafik")
 def grafik():
@@ -105,8 +128,35 @@ def grafik():
   return render_template('grafik.html', datas=datas)
 
 
+
+@app.route("/checklist1")
+def checklist1():
+  #if 'userid' not in session:
+  #  return redirect('/useredit')
+  
+  #user stored in the session or abort
+  userid = str(session['userid'])
+
+  conn = psycopg2.connect(
+                database="vr",
+                user="postgres",
+                host="localhost",
+                port="5432"
+                )
+  cur = conn.cursor()
+  #cur.execute(" SELECT * FROM rooms INNER JOIN tasks ON (rooms.userid = tasks.userid) WHERE rooms.userid = '5' ")
+  cur.execute(" SELECT rooms.room_id,tasks.task_id,tasks.predecessor,tasks.successor,tasks.status FROM rooms INNER JOIN tasks ON (rooms.userid = tasks.userid) WHERE rooms.userid = %s ",
+      (userid)
+      )
+  datas = str(cur.fetchall())
+
+  return (datas)
+  #return render_template('checklist.html', datas=datas)
+
+
+
 #CSV Daten importieren
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
     	f = request.files['the_file']
@@ -138,21 +188,21 @@ def add_user():
               )
             cur = conn.cursor()
             if role == '2' : 
-                #extracting the floors & rooms from the csv and instert to table
-                with open('Duplex_A_20110907_rooms_modified.csv', 'r') as f:
-                    reader = csv.reader(f, delimiter=';')
+                
+                with open('Duplex_A_20110907_rooms_modified.csv', 'r') as file:
+                    reader = csv.reader(file, delimiter=';')
                     for row in reader:
-                      #print(row[1],row[2])
                       cur.execute(
                             " INSERT INTO rooms (userid, floor, room, roomguid) VALUES (%s, %s, %s, %s)",
-                            (userid ,row[1],row[2],row[4])
+                            (userid ,row[1],row[2],row[3])
                       )
-                conn.commit()
+
+
+                      conn.commit()
 
                 return redirect('/admin')
             else:
                 return redirect('/admin')
-
 
 
 

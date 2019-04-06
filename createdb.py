@@ -6,14 +6,14 @@ def create_tables():
     """ create tables in the PostgreSQL database"""
     commands = (
         """
-        CREATE TABLE projects (
+        CREATE TABLE IF NOT EXISTS projects (
             project_id  SERIAL PRIMARY KEY, 
             projectname VARCHAR (50) NOT NULL,
             filename VARCHAR (50) NOT NULL
 
         )
         """,
-        """ CREATE TABLE users (
+        """ CREATE TABLE IF NOT EXISTS users (
                 user_id  SERIAL PRIMARY KEY, 
                 username VARCHAR (100) NOT NULL unique,
                 password VARCHAR (100) NOT NULL unique,
@@ -22,7 +22,7 @@ def create_tables():
         )
         """,
         """
-        CREATE TABLE rooms (
+        CREATE TABLE IF NOT EXISTS rooms (
                 room_id  SERIAL PRIMARY KEY, 
                 userid VARCHAR (100) NOT NULL,
                 floor VARCHAR (100) NOT NULL,
@@ -33,13 +33,21 @@ def create_tables():
         )
         """,
         """
-        CREATE TABLE tasks (
+        CREATE TABLE IF NOT EXISTS tasks (
                 task_id VARCHAR (100) NOT NULL,
                 task VARCHAR (100) NOT NULL,
                 userid VARCHAR (100) NOT NULL,
                 predecessor VARCHAR (100) NULL,
                 successor VARCHAR (100) NULL,
                 status VARCHAR (100) NULL
+        )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS checklist AS (
+                SELECT rooms.userid, rooms.room, tasks.task_id, tasks.task, tasks.successor, tasks.status
+                FROM rooms 
+                INNER JOIN tasks 
+                ON (rooms.userid = tasks.userid)
         )
         """
         )

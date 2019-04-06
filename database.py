@@ -37,13 +37,6 @@ class rooms(db.Model):
   roomguid = db.Column(db.String(100))
   status = db.Column(db.String(100))
 
-  def __init__(self, userid, floor, room, roomguid, status):
-    self.userid = userid
-    self.floor = floor 
-    self.room = room 
-    self.roomguid = roomguid 
-    self.status = status
-
 
 class tasks(db.Model):
   __tablename__ = 'tasks'
@@ -54,6 +47,22 @@ class tasks(db.Model):
   successor = db.Column(db.String(100))
   status = db.Column(db.String(100))
 
+class checklist(db.Model):
+  __tablename__ = 'checklist'
+  userid = db.Column(db.String(100))
+  room = db.Column(db.Integer)
+  task_id = db.Column(db.Integer)
+  task = db.Column(db.String(100))
+  successor = db.Column(db.String(100))
+  status = db.Column(db.String(100))
+  checklist_id = db.Column(db.Integer, primary_key = True)
+
+  def __init__(self,  userid, room, role, projectname):
+     #Attribute der Klasse -> self.xxxx
+    self.userid = userid
+    self.room = room 
+    self.role = role 
+    self.projectname = projectname
 
  
 

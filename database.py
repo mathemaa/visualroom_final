@@ -40,7 +40,8 @@ class rooms(db.Model):
 
 class tasks(db.Model):
   __tablename__ = 'tasks'
-  task_id = db.Column(db.Integer, primary_key = True)
+  taskid = db.Column(db.Integer, primary_key = True)
+  task_id = db.Column(db.String(100))
   task = db.Column(db.String(100))
   userid = db.Column(db.String(100))
   predecessor = db.Column(db.String(100))
@@ -56,13 +57,6 @@ class checklist(db.Model):
   successor = db.Column(db.String(100))
   status = db.Column(db.String(100))
   checklist_id = db.Column(db.Integer, primary_key = True)
-
-  def __init__(self,  userid, room, role, projectname):
-     #Attribute der Klasse -> self.xxxx
-    self.userid = userid
-    self.room = room 
-    self.role = role 
-    self.projectname = projectname
 
  
 

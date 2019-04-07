@@ -64,14 +64,25 @@
                             <option value='3'>Fertiggestellt</option>
                         {% endif %}
                     <select>
-                        <input type="submit" name="btn" value="Update">  
+                     <!--   <input type="submit" name="btn" value="Update">   -->
+
                 </form>
             </td>
             <td>
                         {% for checklist in datas1 %}
-                        	{% if checklist.room == rooms.room %}     
+                        	{% if checklist.room == rooms.room %}  
+			                       	    <form action="/checked/{{checklist.checklist_id}}" method="POST">
+			                       	    	{% if checklist.status == '1' %}  
+			                            		<input type="checkbox" onclick="checkFluency()"  id="fluency" name="status" value="1" checked> 
+			                            		<label >{{checklist.task}}</label>
+			                        		{% endif %}
+			                            	{% if checklist.status == None %}  
+			                            		<input type="checkbox" onclick="checkFluency()"  id="fluency" name="status" value="1" > 
 			                            		<label > {{checklist.task}} </label>
-			                            		<p>		
+			                        		{% endif %}
+			                        		<input type="submit" name="formSubmit" value="Submit" />
+			                            </form>
+
                            	{% endif %}
 
                         {% endfor %}
@@ -82,42 +93,11 @@
 
 
 
-
-
-
-     <table>
-          <tr>
-            <th>ROOM</th>
-            <th>Task</th>
-        <br>
-          </tr>
-
-          {% for checklist in datas1 %}
-          <tr>
-          	<td>{{ checklist.room }}</td>
-            <td> 
-            	<form action="/checked/{{checklist.checklist_id}}" method="POST">
-            								{% if checklist.status == '0' %}  
-			                            		<input type="checkbox"   id="fluency" name="status" value="1" > 
-			                            		<label > {{checklist.task}} </label>
-			                            		<input type="submit" name="formSubmit" value="Submit" />
-			                        		{% endif %}
-			                       	    	{% if checklist.status == '1' %}  
-			                            		<input type="checkbox"   id="fluency" name="status" value="1" checked> 
-			                            		<label >{{checklist.task}}</label>
-			                            		<input type="submit" name="formSubmit" value="Submit" />
-			                        		{% endif %}
-			                        		
-			    </form>
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
-
-
         <br/>
+        
         <a href="/" class="button button1" >Go Back</a>
         <br>
+
         </body>
     
 <script>

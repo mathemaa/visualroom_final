@@ -34,6 +34,7 @@ def create_tables():
         """,
         """
         CREATE TABLE IF NOT EXISTS tasks (
+        		taskid  SERIAL PRIMARY KEY, 
                 task_id VARCHAR (100) NOT NULL,
                 task VARCHAR (100) NOT NULL,
                 userid VARCHAR (100) NOT NULL,

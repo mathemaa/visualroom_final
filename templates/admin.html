@@ -11,7 +11,7 @@
         Neues Projekt hinzufügen:
         <br>
         <br>
-          <form action = "/upload" method = "POST" enctype = "multipart/form-data">
+          <form action = "/upload_rooms" method = "POST" enctype = "multipart/form-data">
               Projektname: <input type="text" name="name">
               <p>CSV hochladen: 
               <input type = "file" name = "the_file" /> </p>
@@ -23,7 +23,6 @@
         Neuen User hinzufügen:
         <br/>
         <br/>
-
         <form action="/new_user" method="POST">
             Projekt: <select name="projectname">
                           {% for projects in datas %}
@@ -43,7 +42,16 @@
               <br/>
              <input type="submit" class="button button1" value="Hinzufügen">
         </form>
-
+        <br>
+        <br>
+        Terminplan hinzufügen:
+        <br>
+        <br>
+          <form action = "/upload_terminplan" method = "POST" enctype = "multipart/form-data">
+              <p>CSV hochladen: 
+              <input type = "file" name = "the_file" /> </p>
+              <input type = "submit" class="button button1" value="Hinzufügen">
+          </form>
         <br>
         <br>
         
@@ -151,7 +159,6 @@
             <th>UserId</th>
             <th>VorgangsId</th>
             <th>Vorgang</th>
-            <th>Vorgänger</th>
             <th>Nachfolger</th>
         <br>
           </tr>
@@ -160,7 +167,6 @@
             <td>{{ tasks.userid }}</td>
             <td>{{ tasks.task_id }}</td>
             <td>{{ tasks.task }}</td>
-            <td>{{ tasks.predecessor }}</td>
             <td>{{ tasks.successor }}</td>
           </tr>
           {% endfor %}

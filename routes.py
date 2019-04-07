@@ -95,8 +95,8 @@ def update(room_id):
 
 @app.route("/checked/<int:checklist_id>", methods=['POST'])
 def checked(checklist_id):
-  current = checklist.query.filter_by(checklist_id = checklist.checklist_id).first()       
-  current.status =request.form['status']
+  current = checklist.query.filter_by(checklist_id = checklist.checklist_id).first()    
+  current.status = request.form['status']
   cur_room = current.room
   cur_suc = current.successor
   db.session.commit()
@@ -109,11 +109,14 @@ def checked(checklist_id):
                 )
   cur = conn.cursor()
   cur.execute(
-  			"UPDATE checklist SET status = '2' WHERE room = %s AND task_id = %s",
+  			"UPDATE checklist SET status = '0' WHERE room = %s AND task_id = %s",
       		(cur_room,cur_suc) )
   conn.commit()
 
   return redirect('/useredit')
+   #x = str (checklist_id)
+   #return(x)
+  
 
 
 @app.route("/grafik")
@@ -121,20 +124,16 @@ def grafik():
   if 'userid' not in session:
     return redirect('/useredit')
   
-  #user stored in the session or abort
+  #user stored in the session 
   userid = str(session['userid'])
 
   datas = rooms.query.filter(rooms.userid == userid).all()
   return render_template('grafik.html', datas=datas)
 
 
-
+#Test funktion 
 @app.route("/checklist1")
 def checklist1():
-  #if 'userid' not in session:
-  #  return redirect('/useredit')
-  
-  #user stored in the session or abort
   userid = str(session['userid'])
 
   conn = psycopg2.connect(
@@ -151,12 +150,10 @@ def checklist1():
   datas = str(cur.fetchall())
 
   return (datas)
-  #return render_template('checklist.html', datas=datas)
-
-
+  
 
 #CSV Daten importieren
-@app.route('/upload', methods=['POST'])
+@app.route('/upload_rooms', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
     	f = request.files['the_file']
@@ -165,6 +162,39 @@ def upload_file():
     	db.session.add(newProject)
     	db.session.commit()
         return 'file uploaded successfully'
+
+
+@app.route('/upload_terminplan', methods=['POST'])
+def upload_tp():
+    f = request.files['the_file']
+    f.save(secure_filename(f.filename))
+
+    conn = psycopg2.connect(
+                database="vr",
+                user="postgres",
+                host="localhost",
+                port="5432"
+                )
+    cur = conn.cursor() 
+
+    x = '1'  
+    if x == '1' : 
+		with open('tp.csv', 'rU') as file:
+                    reader = csv.reader(file, delimiter=';')
+                    for row in reader:
+                      cur.execute(
+                            " INSERT INTO tasks (task_id, task, userid, predecessor, successor) VALUES (%s, %s, %s, %s, %s)",
+                            (row[0],row[1],row[2],row[3],row[4])
+                      )
+                      conn.commit()
+
+
+    cur.execute(
+  			"UPDATE tasks SET status = '0' WHERE predecessor = '0' "
+    )
+    conn.commit()
+
+    return 'file uploaded successfully'
 
 
 
@@ -196,8 +226,6 @@ def add_user():
                             " INSERT INTO rooms (userid, floor, room, roomguid) VALUES (%s, %s, %s, %s)",
                             (userid ,row[1],row[2],row[3])
                       )
-
-
                       conn.commit()
 
                 return redirect('/admin')

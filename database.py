@@ -37,6 +37,13 @@ class rooms(db.Model):
   roomguid = db.Column(db.String(100))
   status = db.Column(db.String(100))
 
+  def __init__(self,  userid, floor, room, roomguid, status):
+     #Attribute der Klasse -> self.xxxx
+    self.userid = userid
+    self.floor = floor 
+    self.room = room 
+    self.roomguid = roomguid
+    self.status = status
 
 class tasks(db.Model):
   __tablename__ = 'tasks'

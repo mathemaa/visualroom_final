@@ -20,7 +20,7 @@ db.init_app(app)
 def session_start():
   return render_template("session.html")
 
-
+#Verifizierung des Nutzers beim Login in der App
 @app.route("/login", methods=['POST'])
 def login():
 
@@ -56,7 +56,7 @@ def login():
       return redirect('/superuser')
 
    
-
+#Alle Tabellendaten fuer den Administartor laden
 @app.route('/admin')
 def admin_session():
   all_projects = projects.query.all()
@@ -64,42 +64,31 @@ def admin_session():
   all_tasks = tasks.query.all()
   return render_template('admin.html',  datas=all_projects, users_data=all_users, tasks_data=all_tasks)
 
+#Alle Daten fuer allgemeinen Nutzer laden, Projektuebersicht
 @app.route('/superuser')
 def superuser_session():
   all_rooms = rooms.query.all()
   return render_template('superuser.html', datas=all_rooms )
 
-
+#Daten laden zum ausfuellen der Tabelle de Nutzer
 @app.route('/useredit')
 def user_session():
   if 'userid' not in session:
     return redirect('/')
-  
+
   userid = str(session['userid'])
 
   datas = rooms.query.filter(rooms.userid == userid).all()
   datas1 = checklist.query.filter(checklist.userid == userid).all()
-  
-  #datas1 = tasks.query.filter(tasks.userid == userid).all()
 
   return render_template('useredit.html', datas=datas, datas1=datas1)
   
 
+#Status in der Datenbank speichern
 @app.route("/update/<int:room_id>", methods=['POST'])
 def update(room_id):
-  room = rooms.query.filter_by(room_id = rooms.room_id).first()       
-  room.status =request.form['status']
-  db.session.commit()
-  return redirect('/useredit')
-
-
-@app.route("/checked/<int:checklist_id>", methods=['POST'])
-def checked(checklist_id):
-  current = checklist.query.filter_by(checklist_id = checklist.checklist_id).first()    
-  current.status = request.form['status']
-  cur_room = current.room
-  cur_suc = current.successor
-  db.session.commit()
+  current_id = room_id
+  status = request.form['status']
 
   conn = psycopg2.connect(
                 database="vr",
@@ -109,16 +98,48 @@ def checked(checklist_id):
                 )
   cur = conn.cursor()
   cur.execute(
-  			"UPDATE checklist SET status = '0' WHERE room = %s AND task_id = %s",
-      		(cur_room,cur_suc) )
+  			"UPDATE rooms SET status = %s WHERE room_id = %s ",
+      		(status, current_id) )
   conn.commit()
 
   return redirect('/useredit')
-   #x = str (checklist_id)
-   #return(x)
+
+
+#Checkliste aktualisieren
+@app.route("/checked/<int:checklist_id>", methods=['POST'])
+def checked(checklist_id):
+  status = request.form['status']
+  cur_id = str(checklist_id)
+
+  conn = psycopg2.connect(
+                database="vr",
+                user="postgres",
+                host="localhost",
+                port="5432"
+                )
+  cur = conn.cursor()
+
+  cur.execute(
+      		"UPDATE checklist SET status = %s WHERE checklist_id = %s",
+      		(status, cur_id))
+
+  cur.execute(" SELECT checklist.room, checklist.successor FROM checklist WHERE checklist_id = %s ",
+      		 (cur_id,))
+
+  datas = (cur.fetchall())
+  for row in datas:
+  	room = row [0]
+  	suc = row [1]
+
+  cur.execute(
+  			"UPDATE checklist SET status = '0' WHERE room = %s AND task_id = %s",
+     		(room, suc))
   
+  conn.commit()
+  return redirect('/useredit')
+  #return (suc)
 
-
+#Status der Raeume fuer visualisierung abrufen
 @app.route("/grafik")
 def grafik():
   if 'userid' not in session:
@@ -131,28 +152,7 @@ def grafik():
   return render_template('grafik.html', datas=datas)
 
 
-#Test funktion 
-@app.route("/checklist1")
-def checklist1():
-  userid = str(session['userid'])
-
-  conn = psycopg2.connect(
-                database="vr",
-                user="postgres",
-                host="localhost",
-                port="5432"
-                )
-  cur = conn.cursor()
-  #cur.execute(" SELECT * FROM rooms INNER JOIN tasks ON (rooms.userid = tasks.userid) WHERE rooms.userid = '5' ")
-  cur.execute(" SELECT rooms.room_id,tasks.task_id,tasks.predecessor,tasks.successor,tasks.status FROM rooms INNER JOIN tasks ON (rooms.userid = tasks.userid) WHERE rooms.userid = %s ",
-      (userid)
-      )
-  datas = str(cur.fetchall())
-
-  return (datas)
-  
-
-#CSV Daten importieren
+#CSV Raumliste importieren
 @app.route('/upload_rooms', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
@@ -163,7 +163,7 @@ def upload_file():
     	db.session.commit()
         return 'file uploaded successfully'
 
-
+#Terminplan importieren
 @app.route('/upload_terminplan', methods=['POST'])
 def upload_tp():
     f = request.files['the_file']
@@ -188,19 +188,18 @@ def upload_tp():
                       )
                       conn.commit()
 
-
+    #Alle Vorgaenge ohne Vorgaenger (=0) werden mit 0 als Status belegt
     cur.execute(
   			"UPDATE tasks SET status = '0' WHERE predecessor = '0' "
     )
     conn.commit()
-
     return 'file uploaded successfully'
 
 
-
+#neuen Nutzer mit Raeumen hinzufuegen
 @app.route('/new_user', methods=['POST'])
 def add_user():
-        #verifying the role, than adding new user
+        	#verifying the role, than adding new user
             role = request.form['role']
             newuser=users(request.form['username'], request.form['password'], request.form['role'], request.form['projectname'])
             db.session.add(newuser)
@@ -209,7 +208,6 @@ def add_user():
             userid = str(newuser.user_id)
 
             #adding within this userid all the rooms to the rooms table
-            
             conn = psycopg2.connect(
               database="vr",
               user="postgres",
